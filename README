@@ -1,0 +1,37 @@
+## Description
+A library to make your existing REXML code compatible with other XML libraries
+such as Nokogiri.
+
+## Installation
+gem install rexml-compat
+
+## Usage
+
+# Remove any references to rexml in your Gemfile, gemspec, etc, including
+any explicit 'require' statements.
+
+# Then require the compatibility layer that's right for you.
+require 'rexml/compat/nokogiri' # or...
+require 'rexml/compat/oga' # or...
+require 'rexml/compat/libxml'
+
+That's it. Your XML handling code should now "Just Work". Or, at least, make
+your conversion efforts much easier.
+
+## Who should use this?
+Some projects use REXML initially because it's pure Ruby, has no external
+dependencies, and is part of the standard library. As your project grows you
+realize that REXML is both slow and memory hungry.
+
+Consequently, you've decided to switch to another XML library and accept the
+external dependencies because REXML is just too slow and/or memory hungry for
+you application now. However, you quickly realize that the API for your
+XML library of choice is not quite the same as REXML and converting it yourself
+be a pain.
+
+If this is the situation you're in, then this is the library for you.
+
+## Future Plans
+Initially we will add a compatibility layer for Nokogiri. Compatibility with
+other xml gems will be added later.
+
