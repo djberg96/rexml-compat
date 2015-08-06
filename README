@@ -11,27 +11,49 @@ gem install rexml-compat
 any explicit 'require' statements.
 
 # Then require the compatibility layer that's right for you.
-require 'rexml/compat/nokogiri' # or...
-require 'rexml/compat/oga' # or...
-require 'rexml/compat/libxml'
+require 'rexml/compat-nokogir' # or...
+require 'rexml/compat-oga' # or...
+require 'rexml/compat-libxml
 
-That's it. Your XML handling code should now "Just Work". Or, at least, make
-your conversion efforts much easier.
+That's it. Your conversion efforts should now be much easier.
+
+## What you still have to deal with
+* The constructor. You will need to replace REXML::Document.new(data) with
+  the appropriate constructor, e.g. Nokogiri::XML::Document.parse(data).
+* Explicit element indexing. REXML begins element indexing at 1 instead of 0.
+  We cannot fix this without also breaking existing code.
+* Attribute accessors. In REXML attributes['foo'] returns a plain value, whereas
+  other gems return a bonafide attribute object. The good news is that if you
+  call a method on an attribute accessed in this manner, it will forward the
+  call to the value, e.g. attributes['foo'].to_i will work.
 
 ## Who should use this?
 Some projects use REXML initially because it's pure Ruby, has no external
 dependencies, and is part of the standard library. As your project grows you
-realize that REXML is both slow and memory hungry.
+realize that REXML is simply not up to the task any more.
 
 Consequently, you've decided to switch to another XML library and accept the
 external dependencies because REXML is just too slow and/or memory hungry for
 you application now. However, you quickly realize that the API for your
 XML library of choice is not quite the same as REXML and converting it yourself
-be a pain.
+can be arduous and mistake prone.
 
 If this is the situation you're in, then this is the library for you.
 
+## Caveats
+This library redefines the Nokogiri::XML::Node#text method to match the REXML
+behavior. Since this was an alias, you can still use Nokogiri::XML::Node#content
+to achieve the original behavior.
+
+If you have existing nokogiri code alongside your rexml code, this may require
+you to modify any existing nokogiri code that was already present in your project.
+
 ## Future Plans
-Initially we will add a compatibility layer for Nokogiri. Compatibility with
+Initially we will add a compatibility layer only for Nokogiri. Compatibility with
 other xml gems will be added later.
 
+## License
+Apache 2.0
+
+## Authors
+The ManageIQ team at Red Hat, Inc.
